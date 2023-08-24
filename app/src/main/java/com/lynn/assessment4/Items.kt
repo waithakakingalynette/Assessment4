@@ -5,6 +5,5 @@ data class Items(
     var id: Int,
     var title: String,
     var body:String,
-    var thumbnail: String
 
 )

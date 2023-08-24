@@ -10,11 +10,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        binding= ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 
@@ -23,40 +23,36 @@ class MainActivity : AppCompatActivity() {
         getItems()
     }
 
-    fun getItems() {
+    private fun getItems() {
         val retrofit = ApiClient.buildApiClient(ApiInterface::class.java)
         val request = retrofit.getItems()
-        request.enqueue(object : Callback<ItemResponse> {
-            override fun onResponse(
-                call: Call<ItemResponse>,
-                response: Response<ItemResponse>
-            ) {
+
+        request.enqueue(object : Callback<List<Items>> {
+            override fun onResponse(call: Call<List<Items>>, response: Response<List<Items>>) {
                 if (response.isSuccessful) {
+                    val items = response.body()
 
-                    var items = response.body()?.items
-
-                    var itemAdapter=ItemsAdapter(items?: emptyList())
-                    binding.rvItems.layoutManager= LinearLayoutManager(this@MainActivity)
+                    val itemAdapter = ItemsAdapter(items ?: emptyList())
+                    binding.rvItems.layoutManager = LinearLayoutManager(this@MainActivity)
                     binding.rvItems.adapter = itemAdapter
 
                     Toast.makeText(
                         baseContext,
-                        "fetched ${items?.size} items",
+                        "Fetched ${items?.size} items",
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
-                    Toast.makeText(baseContext, response.errorBody()?.string(), Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(
+                        baseContext,
+                        response.errorBody()?.string(),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-
             }
 
-            override fun onFailure(call: Call<ItemResponse>, t: Throwable) {
+            override fun onFailure(call: Call<List<Items>>, t: Throwable) {
                 Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
             }
         })
-
-
     }
 }
-

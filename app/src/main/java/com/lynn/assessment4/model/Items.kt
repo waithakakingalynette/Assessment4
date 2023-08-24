@@ -1,4 +1,4 @@
-package com.lynn.assessment4
+package com.lynn.assessment4.model
 
 data class Items(
     var userId:Int,

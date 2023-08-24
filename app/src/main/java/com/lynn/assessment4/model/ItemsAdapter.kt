@@ -1,13 +1,12 @@
-package com.lynn.assessment4
+package com.lynn.assessment4.model
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lynn.assessment4.databinding.RecyclerBinding
-import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.CropCircleTransformation
 
 class ItemsAdapter(var items: List<Items>): RecyclerView.Adapter<ItemViewHolder>() {
+    lateinit var binding: RecyclerBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = RecyclerBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ItemViewHolder( binding)
